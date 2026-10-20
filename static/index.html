@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>架构总览 · 医药问数离线演示</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="layout"><aside class="sidebar"><div class="brand">医药数据分析问数 Agent<small>功能与架构演示 Demo</small></div><div id="nav"></div></aside>
+<main class="main"><div class="page-head"><div><h1>架构总览</h1><div class="sub">四模块离线复刻 · 示例数据 · 可追溯查询与知识引用</div></div><span class="tag warn">复现 Demo · 非企业原始源码</span></div>
+<div class="grid-4"><a class="module-card" href="/chat.html"><h4>① 智能问数</h4><p>销售 / 采购 / 库存，表格、图表与结果导出</p></a><a class="module-card" href="/dashboard.html"><h4>② 可视化大屏</h4><p>卡片拖拽缩放、布局保存、独立刷新</p></a><a class="module-card" href="/rag.html"><h4>③ 知识库问答</h4><p>条款检索、原文抽取、稳定版本引用</p></a><a class="module-card" href="/admin.html"><h4>④ 后台管理</h4><p>运行模式、文档版本、请求明细</p></a></div>
+<div class="card"><h3>当前实际运行架构</h3><div class="arch-flow"><div class="arch-node"><div class="n-title">前端</div><ul><li>原生 HTML / JavaScript</li><li>ECharts 图表</li><li>marked + DOMPurify</li><li>请求取消与会话隔离</li></ul></div><div class="arch-arrow">→</div><div class="arch-node"><div class="n-title">FastAPI 单进程</div><ul><li>任务生命周期与协作取消</li><li>结构化意图 + 规则 SQL</li><li>只读执行、限时与限行</li><li>词面检索 + 条款原文抽取</li></ul></div><div class="arch-arrow">→</div><div class="arch-node"><div class="n-title">本地数据</div><ul><li>SQLite 业务示例库</li><li>SQLite 会话 / 布局 / 日志</li><li>不可变文档版本与引用</li><li>内存字符特征索引</li></ul></div></div></div>
+<div class="grid-2"><div class="card"><h3>问数流程</h3><pre>问题 → 指标 / 时间 / 维度 / 筛选条件
+  → 不支持或歧义：明确提示
+  → 参数化 SQL → 只读、限时执行
+  → 白名单字段纠错（最多一次）
+  → 结果 + 数据范围 + 截断提示
+  → 图表 / 当前结果 Excel 导出</pre><p class="muted">元数据召回在 trace 中展示；离线 SQL 生成使用固定 schema 与业务规则。</p></div><div class="card"><h3>知识库流程</h3><pre>UTF-8 文档 → 稳定文档 ID / 不可变版本
+  → 条款切分 → 最多 128 字符索引片段
+  → 字符特征与词面匹配 → 阈值 / TopK
+  → 抽取相关完整条款 → 引用对应文档版本</pre><p class="muted">没有模型重排。上传更新后，旧回答仍可预览旧文档版本。</p></div></div>
+<div class="card"><h3>与原项目的区别</h3><table><thead><tr><th>环节</th><th>原项目资料描述</th><th>本演示</th></tr></thead><tbody><tr><td>编排与模型</td><td>Dify / LangChain / Qwen3-32B</td><td>Python 规则与原文抽取，未调用 LLM</td></tr><tr><td>检索与存储</td><td>BGE-M3 / Milvus / MySQL</td><td>词面特征 / 内存索引 / SQLite</td></tr><tr><td>前端</td><td>Vue2 / Element UI / vue-grid-layout</td><td>原生页面与栅格拖拽</td></tr><tr><td>文档</td><td>PDF 解析和预览</td><td>UTF-8 TXT / Markdown 版本预览</td></tr><tr><td>评测规模与效果</td><td>原项目档案中的规模及效果口径</td><td>独立本地回归，不能继承原项目成绩</td></tr></tbody></table><p class="muted">示例业务数据与文档不来自真实企业。本 demo 不提供跨问题语义记忆、同比/环比或预测；库存默认最新可用快照。原项目重排是否落地仍以档案的条件说明为准。</p></div>
+</main></div><script src="/js/common.js"></script><script>renderNav("index");</script></body></html>

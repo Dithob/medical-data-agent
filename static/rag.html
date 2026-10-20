@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG 知识库问答 · 医药数据分析问数 Agent Demo</title>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">医药数据分析问数 Agent<small>功能与架构演示 Demo</small></div>
+    <div id="nav"></div>
+  </aside>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>RAG 知识库问答</h1>
+        <div class="sub">条款切分 → 词面检索 → 原文抽取 + 文档版本溯源</div>
+      </div>
+      <button class="primary" id="btn-new">新建会话</button>
+    </div>
+
+    <div class="chat-wrap">
+      <div class="chat-main">
+        <div class="card" style="padding:12px">
+          <div class="msg-list" id="msg-list"><div class="empty">输入问题开始知识库问答</div></div>
+        </div>
+        <div class="card" style="padding:12px">
+          <div class="muted" style="margin-bottom:6px">试试这样问：</div>
+          <div class="row" style="flex-wrap:wrap;gap:6px" id="samples"></div>
+          <div style="margin-top:10px">
+            <textarea id="input" rows="2" placeholder="例如：处方药销售有什么要求？（回车发送）"></textarea>
+          </div>
+          <div class="row" style="margin-top:8px;justify-content:space-between">
+            <span class="muted" id="status"></span>
+            <span class="row">
+              <button id="btn-stop" style="display:none">停止生成</button>
+              <button class="primary" id="btn-send">发送</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-side">
+        <div class="card">
+          <h3>历史会话</h3>
+          <div id="sessions" class="muted">加载中…</div>
+        </div>
+        <div class="card">
+          <h3>检索管线（本轮）</h3>
+          <div id="stats" class="muted">发起问答后展示：候选片段数 → 阈值过滤 → TopK 截取 → 实际引用</div>
+        </div>
+        <div class="card">
+          <h3>当前离线引擎</h3>
+          <table>
+            <tr><td class="muted">语义切分</td><td>最多 128 字符</td></tr>
+            <tr><td class="muted">词面检索召回</td><td>上限 512 片段</td></tr>
+            <tr><td class="muted">相似度阈值</td><td>0.2</td></tr>
+            <tr><td class="muted">TopK 截取（无重排）</td><td>50 条</td></tr>
+            <tr><td class="muted">推理模型</td><td>未接入，使用原文抽取</td></tr>
+            <tr><td class="muted">Embedding</td><td>未接入，使用字符特征</td></tr>
+          </table>
+          <div class="muted" style="margin-top:8px">参数仅用于本地词面检索基线，不能视为真实模型的等效效果。</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- 参考文档预览 -->
+<div class="mask" id="mask">
+  <div class="modal">
+    <h3 id="doc-title">参考文档</h3>
+    <pre id="doc-body" style="max-height:60vh;overflow:auto;white-space:pre-wrap"></pre>
+    <div class="modal-footer"><button id="doc-close">关闭</button></div>
+  </div>
+</div>
+
+<script src="/vendor/marked.min.js"></script>
+<script src="/vendor/purify.min.js"></script>
+<script src="/vendor/highlight.min.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/rag.js"></script>
+</body>
+</html>

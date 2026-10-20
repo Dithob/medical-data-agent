@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智能问数与结果可视化 · 医药数据分析问数 Agent Demo</title>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">医药数据分析问数 Agent<small>功能与架构演示 Demo</small></div>
+    <div id="nav"></div>
+  </aside>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>智能问数与结果可视化</h1>
+        <div class="sub">离线规则问数 · 单指标查询 · SQL / 表格 / 图表 / 当前结果导出</div>
+      </div>
+      <div class="row">
+        <span class="muted">数据源</span>
+        <select id="ds" style="width:180px"></select>
+        <button class="primary" id="btn-new">新建会话</button>
+      </div>
+    </div>
+
+    <div class="chat-wrap">
+      <div class="chat-main">
+        <div class="card" style="padding:12px">
+          <div class="msg-list" id="msg-list">
+            <div class="empty">选择左侧历史会话，或直接输入问题开始问数</div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:12px">
+          <div class="muted" style="margin-bottom:6px">试试这样问：</div>
+          <div class="row" style="flex-wrap:wrap;gap:6px" id="samples"></div>
+          <div style="margin-top:10px">
+            <textarea id="input" rows="2" placeholder="例如：2025 年各品类销售额是多少？（回车发送，Shift+回车换行）"></textarea>
+          </div>
+          <div class="row" style="margin-top:8px;justify-content:space-between">
+            <span class="muted" id="status"></span>
+            <span class="row">
+              <button id="btn-stop" style="display:none">停止生成</button>
+              <button class="primary" id="btn-send">发送</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-side">
+        <div class="card">
+          <h3>历史会话</h3>
+          <div id="sessions" class="muted">加载中…</div>
+        </div>
+        <div class="card">
+          <h3>链路追踪（trace）</h3>
+          <div id="trace" class="muted">发起一次问数后，这里展示完整链路：问题理解 → Schema 检索 → SQL 生成 → 执行/自纠错 → 图表推荐</div>
+        </div>
+        <div class="card">
+          <h3>支持范围</h3>
+          <div class="muted">支持销售、采购和库存的单指标查询，最多两个分组维度。时间以顶部演示参考日为准。暂不支持同比、环比、预测、客单价或跨问题语义记忆。</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/vendor/echarts.min.js"></script>
+<script src="/vendor/marked.min.js"></script>
+<script src="/vendor/purify.min.js"></script>
+<script src="/vendor/highlight.min.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/chart.js"></script>
+<script src="/js/chat.js"></script>
+</body>
+</html>

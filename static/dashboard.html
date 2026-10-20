@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>低代码可视化大屏 · 医药数据分析问数 Agent Demo</title>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">医药数据分析问数 Agent<small>功能与架构演示 Demo</small></div>
+    <div id="nav"></div>
+  </aside>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>低代码可视化大屏</h1>
+        <div class="sub">配置驱动：卡片绑定 SQL + 数据源 → 表格 / 图表 / KPI；拖拽缩放 → JSON 持久化</div>
+      </div>
+      <div class="row">
+        <select id="dash-list" style="width:190px"></select>
+        <button id="btn-new-dash">新建大屏</button>
+        <button id="btn-edit">进入编辑</button>
+        <button id="btn-add">添加卡片</button>
+        <button id="btn-refresh">刷新全部</button>
+        <button class="primary" id="btn-save">保存布局</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <span class="muted" id="dash-info"></span>
+        <span class="row">
+          <span class="muted">自动刷新</span>
+          <select id="refresh-mode" style="width:130px">
+            <option value="off">关闭</option>
+            <option value="interval" selected>按间隔(60s)</option>
+          </select>
+        </span>
+      </div>
+      <div class="grid-stack" id="stack" style="min-height:420px"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>持久化结构（对齐真实项目）</h3>
+        <pre style="font-size:12px">{ cards: [ {
+  id, title, sql, dbConfigId,
+  displayMode: table|chart|number,
+  chartConfig: { chartType, xAxisField, yAxisFields },
+  x, y, w, h
+} ] }</pre>
+        <div class="muted">保存失败降级 localStorage（key: <span class="mono">dashboard-config-{id}</span>），
+          加载时接口失败也从本地恢复。</div>
+      </div>
+      <div class="card">
+        <h3>工程要点</h3>
+        <ul class="muted" style="padding-left:18px;margin:0">
+          <li>12 列栅格，卡片最小 1×1，拖拽只走头部手柄（避免与内部按钮冲突）</li>
+          <li>布局变化写回 cards，用 <span class="mono">x/y/w/h</span> 描述位置与大小</li>
+          <li>缩放后触发 ECharts <span class="mono">resize()</span>，配合 ResizeObserver</li>
+          <li>每张卡片独立 loading / error，刷新用 Promise.allSettled 隔离失败</li>
+          <li>组件销毁时 dispose 图表实例，避免内存泄漏</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- 卡片配置弹窗 -->
+<div class="mask" id="mask">
+  <div class="modal">
+    <h3 id="modal-title">卡片配置</h3>
+    <div class="field"><label>卡片标题</label><input id="f-title"></div>
+    <div class="grid-2">
+      <div class="field"><label>数据源</label><select id="f-ds"></select></div>
+      <div class="field"><label>展示模式</label>
+        <select id="f-mode">
+          <option value="chart">图表</option>
+          <option value="table">表格</option>
+          <option value="number">KPI 数字</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>查询 SQL（只读，后端校验白名单）</label>
+      <textarea id="f-sql" rows="4"></textarea>
+    </div>
+    <div class="row" style="margin-bottom:10px">
+      <button id="f-preview">执行预览</button>
+      <span class="muted" id="f-preview-info"></span>
+    </div>
+    <div class="grid-3">
+      <div class="field"><label>图表类型</label>
+        <select id="f-chart">
+          <option value="bar">柱状图</option><option value="line">折线图</option>
+          <option value="area">面积图</option><option value="pie">饼图</option>
+          <option value="radar">雷达图</option><option value="scatter">散点图</option>
+          <option value="gauge">仪表盘</option>
+        </select>
+      </div>
+      <div class="field"><label>X 轴 / 维度字段</label><select id="f-x"></select></div>
+      <div class="field"><label>Y 轴 / 指标字段</label><select id="f-y"></select></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>列 x</label><input id="f-xpos" type="number" min="0" max="11"></div>
+      <div class="field"><label>行 y</label><input id="f-ypos" type="number" min="0"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>宽 w（列）</label><input id="f-w" type="number" min="1" max="12"></div>
+      <div class="field"><label>高 h（行）</label><input id="f-h" type="number" min="1"></div>
+    </div>
+    <div class="modal-footer">
+      <button id="f-cancel">取消</button>
+      <button class="primary" id="f-ok">确定</button>
+    </div>
+  </div>
+</div>
+
+<script src="/vendor/echarts.min.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/chart.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

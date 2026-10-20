@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>后台配置与平台管理 · 医药数据分析问数 Agent Demo</title>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">医药数据分析问数 Agent<small>功能与架构演示 Demo</small></div>
+    <div id="nav"></div>
+  </aside>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>后台配置与平台管理</h1>
+        <div class="sub">数据源配置（含连接测试）· 模型配置 · RAG 文档管理 · 提问统计与问答明细</div>
+      </div>
+      <div class="row" id="tabs">
+        <button class="primary" data-tab="ds">数据源</button>
+        <button data-tab="model">模型配置</button>
+        <button data-tab="doc">RAG 文档</button>
+        <button data-tab="stats">提问统计</button>
+      </div>
+    </div>
+
+    <!-- 数据源 -->
+    <section class="card" data-panel="ds">
+      <h3>数据源列表</h3>
+      <table id="ds-table"></table>
+      <p class="muted">离线版仅执行内置 SQLite 数据源。其他数据源为占位，不可查询；外部连接配置暂未开放。</p>
+    </section>
+
+    <!-- 模型 -->
+    <section class="card" data-panel="model" style="display:none">
+      <h3>模型配置</h3>
+      <table id="model-table"></table>
+      <p class="muted">当前使用规则问数和原文抽取。LLM、Embedding、Rerank 均未接入，无需 API Key。</p>
+    </section>
+
+    <!-- 文档 -->
+    <section class="card" data-panel="doc" style="display:none">
+      <h3>RAG 文档管理</h3>
+      <div class="row" style="margin-bottom:10px">
+        <input id="doc-file" type="file" accept=".txt,.md" style="width:280px">
+        <button class="primary" id="doc-upload">上传并入库</button>
+        <span class="muted" id="doc-tip">仅支持 UTF-8 TXT/Markdown，最大 2 MiB；同名文件保留历史版本</span>
+      </div>
+      <table id="doc-table"></table>
+    </section>
+
+    <!-- 统计 -->
+    <section class="card" data-panel="stats" style="display:none">
+      <div class="grid-4" id="stat-cards" style="margin-bottom:14px"></div>
+      <div class="row" style="margin-bottom:10px">
+        <select id="stat-module" style="width:150px">
+          <option value="">全部模块</option><option value="DATA">智能问数 DATA</option>
+          <option value="QA">知识问答 QA</option>
+        </select>
+        <input id="stat-kw" placeholder="按问题关键字筛选" style="width:220px">
+        <button id="stat-search">查询</button>
+      </div>
+      <div id="stat-table"></div>
+    </section>
+  </main>
+</div>
+
+<script src="/js/common.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>
