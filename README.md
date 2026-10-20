@@ -28,7 +28,7 @@ macOS/Linux 的入口为 `bash run.sh`，或 `python3 run.py`。入口不含个�
 
 浏览器访问 [本机演示](http://127.0.0.1:8000/)。按 Ctrl+C 停止服务。
 
-启动器自动在 demo 内创建 `.venv/` 并按 `requirements.lock` 安装依赖，**首次安装需要网络**。安装后用 `--no-install` 可禁止自动安装并离线启动；图表、Markdown、语法高亮和 HTML 净化依赖都在 `static/vendor/`。
+启动器自动在仓库根目录创建 `.venv/` 并按 `requirements.lock` 安装依赖，**首次安装需要网络**。安装后用 `--no-install` 可禁止自动安装并离线启动；图表、Markdown、语法高亮和 HTML 净化依赖都在 `static/vendor/`。
 
 运行中的任务登记保存在单进程内存，启动器固定一个 worker。不要通过 `--workers` 启动多进程来共享任务状态。
 
@@ -71,9 +71,9 @@ macOS/Linux 的入口为 `bash run.sh`，或 `python3 run.py`。入口不含个�
 
 | 变量/参数 | 默认值 | 用途 |
 | --- | --- | --- |
-| `MEDICAL_RAG_DATA_DIR` | demo 下 `data/` | 数据库、旧文档迁移目录；建议使用绝对路径 |
+| `MEDICAL_RAG_DATA_DIR` | 仓库根目录下 `data/` | 数据库、旧文档迁移目录；建议使用绝对路径 |
 | `MEDICAL_RAG_AS_OF_DATE` | `2026-08-31` | ISO 格式演示参考日 |
-| `MEDICAL_RAG_VENV` | demo 下 `.venv/` | 隔离 Python 环境路径，建议绝对路径 |
+| `MEDICAL_RAG_VENV` | 仓库根目录下 `.venv/` | 隔离 Python 环境路径，建议绝对路径 |
 | `PYTHON` | Windows 用 `py -3.12`，Shell 用 `python3` | 指定入口解释器 |
 | `PORT` / `--port` | `8000` | 本机端口，命令行优先 |
 | `--no-install` | 关闭 | 缺依赖时直接提示，不联网安装 |
